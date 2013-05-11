@@ -3,8 +3,6 @@ include("includes/config.php");
     try{
 		$json = file_get_contents("https://blockchain.info/nl/merchant/".GUID."/address_balance?password=".FIRSTPASSWORD."&address=".FAUCETADDRESS."&confirmations=".MINIMUMTRANSACTION."");
 		$data = json_decode($json);
-		
-		
 		if($data->{'balance'}/100000000 > 0.01){
 			include("includes/mysql.php");		
 			$result = mysql_query("SELECT address FROM ".MYSQLBTCTABLE."") or die(mysql_error());
@@ -33,9 +31,9 @@ include("includes/config.php");
 					}else{
 						if(SECONDPASSWORD == ""){
 						echo "No second password<br />";
-							$json_url = "https://blockchain.info/nl/merchant/".GUID."/sendmany?password=".FIRSTPASSWORD."&recipients=$recipients";
+							$json_url = "https://blockchain.info/nl/merchant/".GUID."/sendmany?password=".FIRSTPASSWORD."&note=".NOTEMESSAGE."&recipients=$recipients";
 						}else{
-							$json_url = "https://blockchain.info/nl/merchant/".GUID."/sendmany?password=".FIRSTPASSWORD."&second_password=".SECONDPASSWORD."&recipients=$recipients";
+							$json_url = "https://blockchain.info/nl/merchant/".GUID."/sendmany?password=".FIRSTPASSWORD."&second_password=".SECONDPASSWORD."&note=".NOTEMESSAGE."&recipients=$recipients";
 						}
 						$json_data = file_get_contents($json_url);
 						$json_feed = json_decode($json_data);
