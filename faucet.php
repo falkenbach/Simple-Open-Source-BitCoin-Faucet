@@ -2,30 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Bitcoin Information</title>
+	<title>My Awesome Faucet from BitCoinInformation.Appspot.Com</title>
 	<LINK HREF="stylesheet.css" REL="stylesheet" type="text/css" />
 	<LINK REL="shortcut icon" type="image/x-icon" href="favicon.ico">
-	<LINK REL="start" HREF="http://darksavior.t15.org/bitcoininformation/index.php">
-	<META NAME="author" LANG="en" CONTENT="Bitcoin Information">
-	<META NAME="copyright" LANG="en" CONTENT="Copyright 2012-2013 Bitcoin Information">
-	<META NAME="robots" CONTENT="all">
-	<META NAME="robots" CONTENT="noarchive">
-	<META NAME="keywords" LANG="en" CONTENT="bitcoin, information, bitcoin information, free bitcoin, mining, free coins, free bitcoins, bitcoins, faucet, bitcoin faucet, btc, btc faucet, free btc, coinreaper, coin reaper, bitcoin reaper, btc reaper, earn btc, earn bitcoins, price win, price, btc price, faucet price, btc faucet price, faucet btc price, faucet price win, win btc, blog, blogs, btc blog, btc blogs, bitcoin blog, bitcoin blogs, bitcoins blog, bitcoins blogs">
-	<META NAME="description" LANG="en" CONTENT="Bitcoin Information - The place to be for Bitcoin Information. We have got a Faucet with Price Wins and a Coinreaper. Come and visit us sometime!">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://blockchain.info//Resources/wallet/pay-now-button.js"></script>
-	<script type="text/javascript">
-	$(document).keydown(function(e){
-	if (e.keyCode==116){
-		location.reload();
-		return false;}
-	});
-</script>
   </head>
   <body>
     <div id="container">
       <div id="header">
-		<h1>Bitcoin Information - Faucet</h1>
+		<h1>My Awesome Faucet from BitCoinInformation.Appspot.Com</h1>
       </div>
 	   <fieldset>
 	   <legend>Menu</legend>
