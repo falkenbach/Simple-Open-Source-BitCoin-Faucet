@@ -64,7 +64,6 @@
 					$payments=$row['payments'];
 					$totalpricewins=$row['pricewins'];
 				}
-			try {
 				try{	
 					$data = file_get_contents("http://blockchain.info/q/addressbalance/".FAUCETADDRESS."");
 				}catch(Exception $e){
@@ -87,8 +86,8 @@
 						echo "<tr><td class='first'>Total Price Wins:</td><td><b>" . ($totalpricewins + $pricewins) . "</b></td></tr>";
 						echo "</table></br>";
 				echo "</fieldset>";
-					
-			if((($data/100000000) - ($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) < 0.01){
+				
+				if((($data/100000000) - ($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) < 0.01){
 				echo "<p style='margin:0px auto;padding:15px;'>The faucet is dried up, please consider donating to help the less fornunate:<br />";
 			}else{
 			?>
