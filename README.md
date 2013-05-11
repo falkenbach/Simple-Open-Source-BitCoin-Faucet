@@ -1,7 +1,7 @@
-# BitCoin Open Source Faucet
+# Simple Open Source BitCoin Faucet
 
 ##Describtion
-This is a open source bitcoin faucet, created by [BitCoin Information](http://bitcoininformation.appspot.com/faucet/).
+This is a simple open source bitcoin faucet, created by [BitCoin Information](http://bitcoininformation.appspot.com/faucet/).
 
 ###Installation:
 1. Download the .ZIP.
