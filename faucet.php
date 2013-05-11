@@ -94,15 +94,6 @@
 			<fieldset>
 				<legend>Faucet Information</legend>
 					Add your information here.
-					<script>
-					var CoinWidget_Config = {
-						address : '<?php echo FAUCETADDRESS;?>',
-						text : 'Donate for the Faucet',
-						text_label : 'Faucet Address',
-						counter : 'hide'
-					};
-					</script>
-					<script src='http://c.coinwidget.com/widget.js'></script></p>
 			</fieldset>
 			<?php
 				if (!empty($_POST['address'])){
@@ -167,5 +158,6 @@
 		</fieldset>
 	  </div>
     </div>
+    Made by: <a href="http://bitcoininformation.appspot.com/">BitCoin Information</a>
   </body>
 </html>	
