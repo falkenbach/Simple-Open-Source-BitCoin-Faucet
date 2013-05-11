@@ -133,7 +133,7 @@
 								//Already signed up for this hour. IP isn't checked you could add that if you want.
 								echo ("<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>You already signed up. Try again after 1 hour!</b></fieldset>");
 							}else{
-								//Address doesn't exsist within the hour.
+								//Address hasn't been sumitted in this hour.
 								$random = rand(MINRANDOMNUMBER, MAXRANDOMNUMBER);
 								if($random >= BELOWNUMBER){
 									//NO pricewin
