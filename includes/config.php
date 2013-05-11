@@ -1,6 +1,6 @@
 <?php
 define("GUID", "");
-define("FIRSTPASSWORD", "!");
+define("FIRSTPASSWORD", "");
 define("SECONDPASSWORD", "");
 define("FAUCETADDRESS", "");
 define("MINIMUMTRANSACTION", "1");
@@ -8,7 +8,7 @@ define("MINIMUMTRANSACTION", "1");
 define("FAUCETAMOUNTINBTC", "0.00001");
 define("FAUCETAMOUNTINSATOSHI", 1000);
 
-define("MINIMUMPAYOUTREQUEST", 100);
+define("MINIMUMPAYOUTREQUEST", 50);
 define("PRICEWINTIME", 3); 
 define("NOTEMESSAGE", "BitCoin Information Faucet");
 

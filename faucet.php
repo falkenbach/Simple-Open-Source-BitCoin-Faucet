@@ -87,17 +87,7 @@
 			}
 			
 			if((($data->{'balance'}/100000000) - ($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) < 0.01){
-				echo "<p style='margin:0px auto;padding:15px;'>The faucet is dried up, please consider donating to help the less fornunate:<br />
-				<b>".FAUCETADDRESS."</b><br />
-				<script>
-				var CoinWidget_Config = {
-					address : '".FAUCETADDRESS."',
-					text : 'Donate for the Faucet',
-					text_label : 'Faucet Address',
-					counter : 'hide'
-				};
-				</script>
-				<script src='http://c.coinwidget.com/widget.js'></script></p>";
+				echo "<p style='margin:0px auto;padding:15px;'>The faucet is dried up, please consider donating to help the less fornunate:<br />";
 			}else{
 			?>
 			<fieldset>

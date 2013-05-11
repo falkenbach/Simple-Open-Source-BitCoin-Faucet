@@ -9,7 +9,7 @@ This is a open source bitcoin faucet, created by [BitCoin Information](http://bi
 3. Change the config which you can find at: "includes/config.php".
 4. Import the freebtc.sql and the informations.sql in your MySQL database.
 5. Upload everything on your webserver.
-6. Setup a cronjob and let it run the script "runthiscronjob.php". If you do not have access to cronjob functinallity, you can use [SetCronJob](https://www.setcronjob.com/). As a free user you can let it run every hour (which is often enough).
+6. Setup a cronjob and let it run the script "job.php". If you do not have access to cronjob functinallity, you can use [SetCronJob](https://www.setcronjob.com/). As a free user you can let it run every hour (which is often enough).
 7. ????
 8. Profit.
 
