@@ -76,14 +76,14 @@
 						echo "<tr><td class='first'>Faucet Balance:</td><td>" . ($data/100000000) . " BTC</td></tr>";
 						echo "<tr><td><hr class='fancy-line'></td><td><hr class='fancy-line'></td></tr>";
 						echo "<tr><td class='first'>Current Payment Requests:</td><td>" . $currentpayrequests . " People</td></tr>";
-						echo "<tr><td class='first'>Current Price Wins:</td><td>" . $pricewins . " People</td></tr>";
+						echo "<tr><td class='first'>Current Prize Wins:</td><td>" . $pricewins . " People</td></tr>";
 						echo "<tr><td class='first'>This costs the Faucet:</td><td>";
 						printf("%0.7f", (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000));
 						echo " BTC</td></tr>";
 						echo "<tr><td class='first'>The new Balance will be:</td><td>" . (($data/100000000) - (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000)) . " BTC</td></tr>";
 						echo "<tr><td><hr class='fancy-line'></td><td><hr class='fancy-line'></td></tr>";
 						echo "<tr><td class='first'>Total Payments send:</td><td><b>" . $payments . "</b></td></tr>";
-						echo "<tr><td class='first'>Total Price Wins:</td><td><b>" . ($totalpricewins + $pricewins) . "</b></td></tr>";
+						echo "<tr><td class='first'>Total Prize Wins:</td><td><b>" . ($totalpricewins + $pricewins) . "</b></td></tr>";
 						echo "</table></br>";
 				echo "</fieldset>";
 				
@@ -131,7 +131,7 @@
 									if ($run !== true) {
 										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
 									}else{
-										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!<br /><br />You ALSO won the Price Win! Your price will be multiplied by ".PRICEWINTIME."!</b>";
+										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!<br /><br />You ALSO won the Prize Win! Your prize will be multiplied by ".PRICEWINTIME."!</b>";
 									}
 								}
 							}
