@@ -13,10 +13,6 @@
       <div id="header">
 		<h1>My Awesome Faucet from BitCoinInformation.Appspot.Com</h1>
       </div>
-	   <fieldset>
-	   <legend>Menu</legend>
-		<?php include("includes/menu.html"); ?>
-	 </fieldset>
       <div id="content">
         <div class="inner" style="text-align:center;">
 			<?php
@@ -36,10 +32,10 @@
 							?></tr></td>
 							<tr><td>
 								<label for="email">Bitcoin address:</label>
-								<img src="images/0.png" class="NFTextRight"><div class="NFTextCenter"><input type="text" name="address" id="address" size="32" maxlength="128" class="NFText"></div><img src="images/0.png" class="NFTextLeft">
+								<input type="text" name="address" id="address" size="32" maxlength="128">
 							</tr></td>
 							<tr><td>
-									<img class="NFButtonLeft" src="images/0.png"><input type="submit" name="submit" id="submit" value="Submit" class="NFButton"><img src="images/0.png" class="NFButtonRight">
+									<input type="submit" name="submit" id="submit" value="Submit" >
 							</tr></td>
 						</table>
 					</fieldset>	
@@ -55,7 +51,7 @@
 							$currentpayrequests++;
 						}
 					if($currentpayrequests !== 0){
-						$currentpayrequests--;
+						$currentpayrequests--; //This is to correct the bug I have later on. Do not remove if you don't know what you are doing!
 					}
 					$result = mysql_query("SELECT pricewin FROM ".MYSQLBTCTABLE."") or die(mysql_error());
 					$pricewins = 0;
@@ -132,7 +128,6 @@
 							<script src='http://c.coinwidget.com/widget.js'></script></p>
 					</fieldset>
 					<?php
-						//echo $_COOKIE['ref'];
 						if (!empty($_POST['address'])){
 							require_once('recaptchalib.php');
 							$privatekey = RECAPTCHAPRIVATEKEY;
@@ -151,32 +146,19 @@
 									}else{
 										$random = rand(MINRANDOMNUMBER, MAXRANDOMNUMBER);
 										if($random >= BELOWNUMBER){
-											if($_COOKIE['ref'] != null){
-												mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time) VALUES('','" . $_COOKIE['ref'] . "','REFERRAL', '".date("Y-m-d")."', '".date("H")."')"); 
-											}
 											$run = mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."')"); 
 											if ($run !== true) {
 												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
 											}else{
-												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!</b>
-												<p />Want to earn another payment? Just send this referral link to a friend and if they request a payment, you will get one too!
-												<br /><i>Oh and btw, if they win the Price Win, you do too!</i><br/>
-												<input type='text' style='width:100%;text-align:center;color:gray;text-decoration:underline;font-weight:bold;' value='http://bitcoininformation.appspot.com/?ref=".$_POST['address']."' readonly> </fieldset>";
+												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!</b>";
 											}
 										}else{
-											if($_COOKIE['ref'] != null){
-												mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time, pricewin) VALUES('','" . $_COOKIE['ref'] . "','REFERRAL', '".date("Y-m-d")."', '".date("H")."', '1')"); 
-											}
 											$run = mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time, pricewin) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."', '1')"); 
 											if ($run !== true) {
 												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
 											}else{
-												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!<br /><br />You ALSO won the Price Win! Your price will be multiplied by ".PRICEWINTIME."!</b>
-												<p />Want to earn another payment? Just send this referral link to a friend and if they request a payment, you will get one too!
-												<br /><i>Oh and btw, if they win the Price Win, you do too!</i><br/>
-												<input type='text' style='width:100%;text-align:center;color:gray;text-decoration:underline;font-weight:bold;' value='http://bitcoininformation.appspot.com/?ref=".$_POST['address']."' readonly> </fieldset>";
+												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!<br /><br />You ALSO won the Price Win! Your price will be multiplied by ".PRICEWINTIME."!</b>";
 											}
-
 										}
 									}
 								}
@@ -204,8 +186,7 @@
 	  <div id="footer">
 		<fieldset>
 			  <legend>Ad</legend>
-				<script type="text/javascript" src="//puppytwist.com/api/script.php?p=226&c=no_adult&a=image"></script>
-				<br /><a href="mailto:bitcoininformationappspot@gmail.com">Contact me</a> if you want to hire this ad place.				
+				Add you ad and stuff.
 		</fieldset>
 	  </div>
     </div>
