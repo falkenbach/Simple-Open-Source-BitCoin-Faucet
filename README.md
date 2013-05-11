@@ -1,4 +1,4 @@
-bitcoinopensourcefaucet
-=======================
+# BitCoin Open Source Faucet
 
-This is a simple to use Open Source faucet.
+##Describtion
+This is a open source bitcoin faucet, created by [BitCoin Information](http://bitcoininformation.appspot.com/faucet/).
