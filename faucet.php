@@ -73,14 +73,12 @@
 							echo "<table class='test'>";
 							echo "<tr><td class='first'>Faucet Address:</td><td>" . $data->{'address'} . "</td></tr>";
 							echo "<tr><td class='first'>Faucet Balance:</td><td>" . ($data->{'balance'}/100000000) . " BTC</td></tr>";
-							echo "<tr><td><hr class='fancy-line'></td><td><hr class='fancy-line'></td></tr>";
 							echo "<tr><td class='first'>Current Payment Requests:</td><td>" . $currentpayrequests . " People</td></tr>";
 							echo "<tr><td class='first'>Current Price Wins:</td><td>" . $pricewins . " People</td></tr>";
 							echo "<tr><td class='first'>This costs the Faucet:</td><td>";
 							printf("%0.7f", (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000));
 							echo " BTC</td></tr>";
 							echo "<tr><td class='first'>The new Balance will be:</td><td>" . (($data->{'balance'}/100000000) - (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000)) . " BTC</td></tr>";
-							echo "<tr><td><hr class='fancy-line'></td><td><hr class='fancy-line'></td></tr>";
 							echo "<tr><td class='first'>Total Payments send:</td><td><b>" . $payments . "</b></td></tr>";
 							echo "<tr><td class='first'>Total Price Wins:</td><td><b>" . ($totalpricewins + $pricewins) . "</b></td></tr>";
 							echo "</table></br>";
