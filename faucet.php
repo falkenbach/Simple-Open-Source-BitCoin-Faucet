@@ -65,28 +65,30 @@
 					$totalpricewins=$row['pricewins'];
 				}
 			try {
-				$json = file_get_contents("https://blockchain.info/nl/merchant/".GUID."/address_balance?password=".FIRSTPASSWORD."&address=".FAUCETADDRESS."&confirmations=".MINIMUMTRANSACTION."");
-				$data = json_decode($json);
+				try{	
+					$data = file_get_contents("http://blockchain.info/q/addressbalance/".FAUCETADDRESS."");
+				}catch(Exception $e){
+					echo "Error getting the balance.";
+				}
 				echo "<fieldset>";
 					echo "<legend>Faucet Details</legend>";
-					echo "<table class='test'>";
-					echo "<tr><td class='first'>Faucet Address:</td><td>" . $data->{'address'} . "</td></tr>";
-					echo "<tr><td class='first'>Faucet Balance:</td><td>" . ($data->{'balance'}/100000000) . " BTC</td></tr>";
-					echo "<tr><td class='first'>Current Payment Requests:</td><td>" . $currentpayrequests . " People</td></tr>";
-					echo "<tr><td class='first'>Current Price Wins:</td><td>" . $pricewins . " People</td></tr>";
-					echo "<tr><td class='first'>This costs the Faucet:</td><td>";
-					printf("%0.7f", (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000));
-					echo " BTC</td></tr>";
-					echo "<tr><td class='first'>The new Balance will be:</td><td>" . (($data->{'balance'}/100000000) - (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000)) . " BTC</td></tr>";
-					echo "<tr><td class='first'>Total Payments send:</td><td><b>" . $payments . "</b></td></tr>";
-					echo "<tr><td class='first'>Total Price Wins:</td><td><b>" . ($totalpricewins + $pricewins) . "</b></td></tr>";
-					echo "</table></br>";
+						echo "<table class='test'>";
+						echo "<tr><td class='first'>Faucet Address:</td><td>" . FAUCETADDRESS . "</td></tr>";
+						echo "<tr><td class='first'>Faucet Balance:</td><td>" . ($data/100000000) . " BTC</td></tr>";
+						echo "<tr><td><hr class='fancy-line'></td><td><hr class='fancy-line'></td></tr>";
+						echo "<tr><td class='first'>Current Payment Requests:</td><td>" . $currentpayrequests . " People</td></tr>";
+						echo "<tr><td class='first'>Current Price Wins:</td><td>" . $pricewins . " People</td></tr>";
+						echo "<tr><td class='first'>This costs the Faucet:</td><td>";
+						printf("%0.7f", (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000));
+						echo " BTC</td></tr>";
+						echo "<tr><td class='first'>The new Balance will be:</td><td>" . (($data/100000000) - (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000)) . " BTC</td></tr>";
+						echo "<tr><td><hr class='fancy-line'></td><td><hr class='fancy-line'></td></tr>";
+						echo "<tr><td class='first'>Total Payments send:</td><td><b>" . $payments . "</b></td></tr>";
+						echo "<tr><td class='first'>Total Price Wins:</td><td><b>" . ($totalpricewins + $pricewins) . "</b></td></tr>";
+						echo "</table></br>";
 				echo "</fieldset>";
-			}catch (Exception $e) {
-				echo "<fieldset><legend>Sorry</legend>Blockchain is offline, Faucet information is not possible right now.</fieldset>";
-			}
-			
-			if((($data->{'balance'}/100000000) - ($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) < 0.01){
+					
+			if((($data/100000000) - ($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) < 0.01){
 				echo "<p style='margin:0px auto;padding:15px;'>The faucet is dried up, please consider donating to help the less fornunate:<br />";
 			}else{
 			?>
