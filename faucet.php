@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Bitcoin Information</title>
+	<LINK HREF="stylesheet.css" REL="stylesheet" type="text/css" />
+	<LINK REL="shortcut icon" type="image/x-icon" href="favicon.ico">
+	<LINK REL="start" HREF="http://darksavior.t15.org/bitcoininformation/index.php">
+	<META NAME="author" LANG="en" CONTENT="Bitcoin Information">
+	<META NAME="copyright" LANG="en" CONTENT="Copyright 2012-2013 Bitcoin Information">
+	<META NAME="robots" CONTENT="all">
+	<META NAME="robots" CONTENT="noarchive">
+	<META NAME="keywords" LANG="en" CONTENT="bitcoin, information, bitcoin information, free bitcoin, mining, free coins, free bitcoins, bitcoins, faucet, bitcoin faucet, btc, btc faucet, free btc, coinreaper, coin reaper, bitcoin reaper, btc reaper, earn btc, earn bitcoins, price win, price, btc price, faucet price, btc faucet price, faucet btc price, faucet price win, win btc, blog, blogs, btc blog, btc blogs, bitcoin blog, bitcoin blogs, bitcoins blog, bitcoins blogs">
+	<META NAME="description" LANG="en" CONTENT="Bitcoin Information - The place to be for Bitcoin Information. We have got a Faucet with Price Wins and a Coinreaper. Come and visit us sometime!">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://blockchain.info//Resources/wallet/pay-now-button.js"></script>
+	<script type="text/javascript">
+	$(document).keydown(function(e){
+	if (e.keyCode==116){
+		location.reload();
+		return false;}
+	});
+</script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="header">
+		<h1>Bitcoin Information - Faucet</h1>
+      </div>
+	   <fieldset>
+	   <legend>Menu</legend>
+		<?php include("includes/menu.html"); ?>
+	 </fieldset>
+      <div id="content">
+        <div class="inner" style="text-align:center;">
+			<?php
+			include("includes/config.php");
+			include("includes/mysql.php");
+			function form(){
+			   ?>
+				<form method="post" action="faucet.php">
+					<fieldset>
+						<table style="float:center!improtant; text-align:center!important; margin-left:auto!important;margin-right:auto!important;">
+							<tr><legend>Request Payment</legend></tr>
+							<tr><td>					
+							<?php
+								  require_once('recaptchalib.php');
+								  $publickey = RECAPTCHAPUBLICKEY; // you got this from the signup page
+								  echo recaptcha_get_html($publickey);
+							?></tr></td>
+							<tr><td>
+								<label for="email">Bitcoin address:</label>
+								<img src="images/0.png" class="NFTextRight"><div class="NFTextCenter"><input type="text" name="address" id="address" size="32" maxlength="128" class="NFText"></div><img src="images/0.png" class="NFTextLeft">
+							</tr></td>
+							<tr><td>
+									<img class="NFButtonLeft" src="images/0.png"><input type="submit" name="submit" id="submit" value="Submit" class="NFButton"><img src="images/0.png" class="NFButtonRight">
+							</tr></td>
+						</table>
+					</fieldset>	
+				 </form>
+				<?php
+			}	
+			if(false == false){
+				try {
+					$result = mysql_query("SELECT address FROM ".MYSQLBTCTABLE."") or die(mysql_error());
+					$currentpayrequests = 0;
+						while($row = mysql_fetch_array($result)) 
+						{
+							$currentpayrequests++;
+						}
+					if($currentpayrequests !== 0){
+						$currentpayrequests--;
+					}
+					$result = mysql_query("SELECT pricewin FROM ".MYSQLBTCTABLE."") or die(mysql_error());
+					$pricewins = 0;
+						while($row = mysql_fetch_array($result)) 
+						{
+							if($row['pricewin'] == "1"){
+							$pricewins++;}
+						}
+					$result = mysql_query("SELECT payments, pricewins FROM informations ORDER BY datetime DESC LIMIT 1");
+						while($row = mysql_fetch_array($result)) 
+						{
+							$payments=$row['payments'];
+							$totalpricewins=$row['pricewins'];
+						}
+					$json = file_get_contents("https://blockchain.info/nl/merchant/".GUID."/address_balance?password=".FIRSTPASSWORD."&address=".FAUCETADDRESS."&confirmations=".MINIMUMTRANSACTION."");
+					$data = json_decode($json);
+					echo "<fieldset>";
+						echo "<legend>Faucet Details</legend>";
+							echo "<table class='test'>";
+							echo "<tr><td class='first'>Faucet Address:</td><td>" . $data->{'address'} . "</td></tr>";
+							echo "<tr><td class='first'>Faucet Balance:</td><td>" . ($data->{'balance'}/100000000) . " BTC</td></tr>";
+							echo "<tr><td><hr class='fancy-line'></td><td><hr class='fancy-line'></td></tr>";
+							echo "<tr><td class='first'>Current Payment Requests:</td><td>" . $currentpayrequests . " People</td></tr>";
+							echo "<tr><td class='first'>Current Price Wins:</td><td>" . $pricewins . " People</td></tr>";
+							echo "<tr><td class='first'>This costs the Faucet:</td><td>";
+							printf("%0.7f", (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000));
+							echo " BTC</td></tr>";
+							echo "<tr><td class='first'>The new Balance will be:</td><td>" . (($data->{'balance'}/100000000) - (($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) + ((($pricewins*FAUCETAMOUNTINSATOSHI) * 2)/100000000)) . " BTC</td></tr>";
+							echo "<tr><td><hr class='fancy-line'></td><td><hr class='fancy-line'></td></tr>";
+							echo "<tr><td class='first'>Total Payments send:</td><td><b>" . $payments . "</b></td></tr>";
+							echo "<tr><td class='first'>Total Price Wins:</td><td><b>" . ($totalpricewins + $pricewins) . "</b></td></tr>";
+							echo "</table></br>";
+					echo "</fieldset>";
+					
+					
+					if((($data->{'balance'}/100000000) - ($currentpayrequests*FAUCETAMOUNTINSATOSHI)/100000000) < 0.01){
+						echo "<p style='margin:0px auto;padding:15px;'>The faucet is dried up, please consider donating to help the less fornunate:<br />
+						<b>".FAUCETADDRESS."</b><br />
+						<script>
+						var CoinWidget_Config = {
+							address : '".FAUCETADDRESS."',
+							text : 'Donate for the Faucet',
+							text_label : 'Faucet Address',
+							counter : 'hide'
+						};
+						</script>
+						<script src='http://c.coinwidget.com/widget.js'></script></p>";
+					}else{
+					?>
+					<fieldset>
+						<legend>Faucet Information</legend>
+							<font style="font-family:Georgia,serif;color:#4E443C;font-variant: small-caps; text-transform: none; font-weight: 100; margin-bottom: 0;">Payout</font>
+							<p /><b>Current payout is</b>: <u><?php echo FAUCETAMOUNTINBTC;?> BTC</u>.<br/>Higher payout is possible if I get more donations for the faucet.<br />
+							<hr class="fancy-line">
+							<font style="font-family:Georgia,serif;color:#4E443C;font-variant: small-caps; text-transform: none; font-weight: 100; margin-bottom: 0;">Sending Information</font>
+							<p />We send BTC when <?php echo MINIMUMPAYOUTREQUEST; ?> people requested a payment to keep the transaction fee low.<br />So it could take a while until you get your BTC, BUT you can request a payment <u>every</u> <font style="font-weight:bold;font-size:14px;">hour!</font></b><br />
+							<hr class="fancy-line">
+							<font style="font-family:Georgia,serif;color:#4E443C;font-variant: small-caps; text-transform: none; font-weight: 100; margin-bottom: 0;">Price Win</font>
+							<p />There is a 1 out of 10 chance that you get the Price Win.<br />If you get it, we will multiply your payout by <b><?php echo PRICEWINTIME; ?></b>! This means that you get: <u><?php printf("%0.7f", (FAUCETAMOUNTINBTC * PRICEWINTIME)); ?> BTC</u>!
+							<hr class="fancy-line">
+							<font style="font-family:Georgia,serif;color:#4E443C;font-variant: small-caps; text-transform: none; font-weight: 100; margin-bottom: 0;">News</font>
+							<p /><b>We now have a referral system! Request a payment and check it out.</b><br/>
+							<hr class="fancy-line">
+							<font style="font-family:Georgia,serif;color:#4E443C;font-variant: small-caps; text-transform: none; font-weight: 100; margin-bottom: 0;">Keep Us Alive</font>
+							<p style='padding:5px;'><i>Please consider donating to help the less fornunate:</i><br />
+							<script>
+							var CoinWidget_Config = {
+								address : '<?php echo FAUCETADDRESS;?>',
+								text : 'Donate for the Faucet',
+								text_label : 'Faucet Address',
+								counter : 'hide'
+							};
+							</script>
+							<script src='http://c.coinwidget.com/widget.js'></script></p>
+					</fieldset>
+					<?php
+						//echo $_COOKIE['ref'];
+						if (!empty($_POST['address'])){
+							require_once('recaptchalib.php');
+							$privatekey = RECAPTCHAPRIVATEKEY;
+							$resp = recaptcha_check_answer ($privatekey,$_SERVER["REMOTE_ADDR"],$_POST["recaptcha_challenge_field"],$_POST["recaptcha_response_field"]);
+
+							if (!$resp->is_valid) {
+								// What happens when the CAPTCHA was entered incorrectly
+								echo ("<fieldset><legend>Request Payment</legend><p style='color:red;'><b>Wrong reCAPTCHA! Try again.</b></fieldset>");
+								form();
+							} 
+							else {
+								try {
+									$result = mysql_query("SELECT * FROM ".MYSQLBTCTABLE." WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' AND date = '".date("Y-m-d")."' AND time = '".date("H")."'") or die(mysql_error());
+									if(mysql_fetch_array($result) !== false){
+										echo ("<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>You already signed up. Try again after 1 hour!</b></fieldset>");
+									}else{
+										$random = rand(MINRANDOMNUMBER, MAXRANDOMNUMBER);
+										if($random >= BELOWNUMBER){
+											if($_COOKIE['ref'] != null){
+												mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time) VALUES('','" . $_COOKIE['ref'] . "','REFERRAL', '".date("Y-m-d")."', '".date("H")."')"); 
+											}
+											$run = mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."')"); 
+											if ($run !== true) {
+												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
+											}else{
+												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!</b>
+												<p />Want to earn another payment? Just send this referral link to a friend and if they request a payment, you will get one too!
+												<br /><i>Oh and btw, if they win the Price Win, you do too!</i><br/>
+												<input type='text' style='width:100%;text-align:center;color:gray;text-decoration:underline;font-weight:bold;' value='http://bitcoininformation.appspot.com/?ref=".$_POST['address']."' readonly> </fieldset>";
+											}
+										}else{
+											if($_COOKIE['ref'] != null){
+												mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time, pricewin) VALUES('','" . $_COOKIE['ref'] . "','REFERRAL', '".date("Y-m-d")."', '".date("H")."', '1')"); 
+											}
+											$run = mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time, pricewin) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."', '1')"); 
+											if ($run !== true) {
+												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
+											}else{
+												echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!<br /><br />You ALSO won the Price Win! Your price will be multiplied by ".PRICEWINTIME."!</b>
+												<p />Want to earn another payment? Just send this referral link to a friend and if they request a payment, you will get one too!
+												<br /><i>Oh and btw, if they win the Price Win, you do too!</i><br/>
+												<input type='text' style='width:100%;text-align:center;color:gray;text-decoration:underline;font-weight:bold;' value='http://bitcoininformation.appspot.com/?ref=".$_POST['address']."' readonly> </fieldset>";
+											}
+
+										}
+									}
+								}
+								catch (Exception $e) {
+									echo "Something went wrong with the database. The faucet will be offline until this problem is fixed. Please try again later.";
+									echo $e;
+								}
+							}
+						} 
+						else {
+							form();
+						}
+					}
+				}
+				catch (Exception $e) {
+				echo "<fieldset><legend>Sorry</legend>Blockchain is offline, Faucet information is not possible right now.</fieldset>";
+				}
+			}else{
+				echo "<fieldset><legend>Sorry</legend>The faucet is currently offline, because we are adding new features. We have to make changes to the database, which makes the the faucet non-useable.</fieldset>";
+			}
+			mysql_close();
+			?>
+        </div>
+      </div>
+	  <div id="footer">
+		<fieldset>
+			  <legend>Ad</legend>
+				<script type="text/javascript" src="//puppytwist.com/api/script.php?p=226&c=no_adult&a=image"></script>
+				<br /><a href="mailto:bitcoininformationappspot@gmail.com">Contact me</a> if you want to hire this ad place.				
+		</fieldset>
+	  </div>
+    </div>
+  </body>
+</html>	
