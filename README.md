@@ -17,6 +17,7 @@ This is a simple open source bitcoin faucet, created by [BitCoin Information](ht
 - There has to be a first row in the database, else it won't work. I do not know why this happens, but there has to be a row. Nothing will be send to this address, because it will be skipped by the " *OFFSET 1* ". This means that you can put in whatever you want.
 
 ###License:
+	Copyright (C) 2013 BitCoin Information (bitcoininformation.appspot.com
 	This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
