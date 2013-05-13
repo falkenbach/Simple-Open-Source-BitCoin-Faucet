@@ -29,7 +29,7 @@ include("includes/config.php");
 				} 
 			if($currentpayrequests >= MINIMUMPAYOUTREQUEST){
 				$arr = null;
-				$result = mysql_query("SELECT address, pricewin FROM ".MYSQLBTCTABLE." ORDER BY id LIMIT ".MINIMUMPAYOUTREQUEST." OFFSET 1") or die(mysql_error());;
+				$result = mysql_query("SELECT address, pricewin FROM ".MYSQLBTCTABLE." ORDER BY id LIMIT ". ($currentpayrequests - 1) ." OFFSET 1") or die(mysql_error());;
 				if(mysql_fetch_array($result) != null){
 					$totalpricewins = 0;
 					while($row = mysql_fetch_array($result)) 
