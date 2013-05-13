@@ -112,7 +112,8 @@
 					Add your information here.
 			</fieldset>
 			<?php
-				if (!empty($_POST['address'])){
+				include('checkaddress.php');
+				if (!empty($_POST['address']) && checkAddress($_POST['address']) == 1){
 					//Form submitted
 					require_once('recaptchalib.php');
 					$privatekey = RECAPTCHAPRIVATEKEY;
