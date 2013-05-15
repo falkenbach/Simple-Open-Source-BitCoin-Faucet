@@ -27,6 +27,10 @@ define("FAUCETAMOUNTINSATOSHI", 1000);
 define("MINIMUMPAYOUTREQUEST", 50);
 define("PRICEWINTIME", 3); 
 define("NOTEMESSAGE", "BitCoin Information Faucet");
+/* 
+   Note's won't be send with the payment at the moment. You can add it if you like. 
+   Just add &note=".NOTEMSSAGE." to the blockchain url in the "Job.php" file/   
+*/
 
 define("MINRANDOMNUMBER", 1);
 define("MAXRANDOMNUMBER", 100);
