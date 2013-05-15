@@ -62,7 +62,7 @@ include("includes/config.php");
 								mysql_query("INSERT INTO ".MYSQLINFORMATIONTABLE." (id,datetime,payments,pricewins)VALUES (NULL,'".date("Y-m-d H:i:s")."',  '". ($row['payments'] + 1)."',  '". ($row['pricewins'] + $totalpricewins )."')");
 							}											
 							mysql_query("TRUNCATE TABLE ".MYSQLBTCTABLE.";");
-							// This is a know bug. The payout script doesn't work with the first row. That is why there is a OFFSET 1. This line is needed howewer. //
+							// This is a know bug. The payout script doesn't work with the first row. That is why there is a OFFSET 1. This line is needed howewer. You can change it if you want. // 
 							mysql_query("INSERT INTO ".MYSQLBTCTABLE." (id,address,ip) VALUES ( '', 'randomaddress', '127.0.0.1' )")or die(mysql_error());
 							// ------------------------- //
 							echo "<br />Cleared table";
@@ -72,7 +72,7 @@ include("includes/config.php");
 					echo "Nobody to give BTC too.";
 				}
 			}else{
-				echo "Too less requests to cashout.";
+				echo "Too few requests to cashout.";
 			}
 			mysql_close();
 		}else{

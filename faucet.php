@@ -129,7 +129,7 @@
 						try {
 							$result = mysql_query("SELECT * FROM ".MYSQLBTCTABLE." WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' AND date = '".date("Y-m-d")."' AND time = '".date("H")."'") or die(mysql_error());
 							if(mysql_fetch_array($result) !== false){
-								//Already signed up for this hour. IP isn't checked you could add that if you want.
+								//Already signed up for this hour. IP is checked, but you could change that if you want. Hell you can change everything.
 								echo ("<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>You already signed up. Try again after 1 hour!</b></fieldset>");
 							}else{
 								//Address hasn't been sumitted in this hour.
@@ -139,16 +139,20 @@
 									$run = mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."')"); 
 									if ($run !== true) {
 										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
+										echo '<fieldset><legend>Gamble on Peter vs. Chicken!</legend><a href="http://peterversuschicken.appspot.com/" target="_top"><img border="0" src="peterad.jpg" alt="Come and gamble a bit!" width="300" height="250"></a></fieldset>';
 									}else{
 										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!</b>";
+										echo '<fieldset><legend>Gamble on Peter vs. Chicken!</legend><a href="http://peterversuschicken.appspot.com/" target="_top"><img border="0" src="peterad.jpg" alt="Come and gamble a bit!" width="300" height="250"></a></fieldset>';
 									}
 								}else{
 									//PRICEWIN
 									$run = mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time, pricewin) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."', '1')"); 
 									if ($run !== true) {
 										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
+										echo '<fieldset><legend>Gamble on Peter vs. Chicken!</legend><a href="http://peterversuschicken.appspot.com/" target="_top"><img border="0" src="peterad.jpg" alt="Come and gamble a bit!" width="300" height="250"></a></fieldset>';
 									}else{
-										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!<br /><br />You ALSO won the Prize Win! Your prize will be multiplied by ".PRICEWINTIME."!</b>";
+										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!<br /><br />You ALSO won the Prize Win! This payment will be multiplied by ".PRICEWINTIME."!</b>";
+										echo '<fieldset><legend>Gamble on Peter vs. Chicken!</legend><a href="http://peterversuschicken.appspot.com/" target="_top"><img border="0" src="peterad.jpg" alt="Come and gamble a bit!" width="300" height="250"></a></fieldset>';
 									}
 								}
 							}
@@ -175,6 +179,7 @@
 		</fieldset>
 	  </div>
     </div>
+	<!-- License rules state that this HAS to stay. You CANNOT remove this credit. -->
     Made by: <a href="http://bitcoininformation.appspot.com/">BitCoin Information</a>
   </body>
 </html>	
