@@ -14,7 +14,7 @@ This is a simple open source bitcoin faucet, created by [BitCoin Information](ht
 8. Profit.
 
 ###Known Bugs:
-- There has to be a first row in the database, else it won't work. I do not know why this happens, but there has to be a row. Nothing will be send to this address, because it will be skipped by the " *OFFSET 1* ". This means that you can put in whatever you want.
+- There has to be a first row in the database, else the cronjob won't work. I do not know why this happens, but there has to be a row. Nothing will be send to this address, because it will be skipped by the " *OFFSET 1* ". So you could enter whatever you want.
 
 ###License:
 Copyright (C) 2013 BitCoin Information (bitcoininformation.appspot.com)
