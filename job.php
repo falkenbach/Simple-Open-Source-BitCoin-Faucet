@@ -45,27 +45,31 @@ include("includes/config.php");
 					if($recipients == null || $recipients == ""){
 						echo "Problem with recipients";
 					}else{
-						if(SECONDPASSWORD == ""){
-						echo "No second password<br />";
-							$json_url = "https://blockchain.info/nl/merchant/".GUID."/sendmany?password=".FIRSTPASSWORD."&note=".NOTEMESSAGE."&recipients=$recipients";
-						}else{
-							$json_url = "https://blockchain.info/nl/merchant/".GUID."/sendmany?password=".FIRSTPASSWORD."&second_password=".SECONDPASSWORD."&note=".NOTEMESSAGE."&recipients=$recipients";
-						}
-						$json_data = file_get_contents($json_url);
-						$json_feed = json_decode($json_data);
-						echo $json_feed->{'message'};
-						echo $json_feed->{'error'};
-						if($json_feed->{'error'} == null){
-							$result = mysql_query("SELECT payments, pricewins FROM ".MYSQLINFORMATIONTABLE." ORDER BY datetime DESC LIMIT 1");
-							while($row = mysql_fetch_array($result)){
-								//Update the faucet information
-								mysql_query("INSERT INTO ".MYSQLINFORMATIONTABLE." (id,datetime,payments,pricewins)VALUES (NULL,'".date("Y-m-d H:i:s")."',  '". ($row['payments'] + 1)."',  '". ($row['pricewins'] + $totalpricewins )."')");
-							}											
-							mysql_query("TRUNCATE TABLE ".MYSQLBTCTABLE.";");
-							// This is a know bug. The payout script doesn't work with the first row. That is why there is a OFFSET 1. This line is needed howewer. You can change it if you want. // 
-							mysql_query("INSERT INTO ".MYSQLBTCTABLE." (id,address,ip) VALUES ( '', 'randomaddress', '127.0.0.1' )")or die(mysql_error());
-							// ------------------------- //
-							echo "<br />Cleared table";
+					if(($currentpayrequests * 1000) < 5430){
+						echo "Stopped by the 5430 Satoshi blockade. Your payment has to be higher then 5430 Satoshi.<br/>This can be done easily by increasing your reward or minimum payout in the config file.<br/>";
+					}else{
+							if(SECONDPASSWORD == ""){
+							echo "No second password<br />";
+								$json_url = "https://blockchain.info/nl/merchant/".GUID."/sendmany?password=".FIRSTPASSWORD."&note=".NOTEMESSAGE."&recipients=$recipients";
+							}else{
+								$json_url = "https://blockchain.info/nl/merchant/".GUID."/sendmany?password=".FIRSTPASSWORD."&second_password=".SECONDPASSWORD."&note=".NOTEMESSAGE."&recipients=$recipients";
+							}
+							$json_data = file_get_contents($json_url);
+							$json_feed = json_decode($json_data);
+							echo $json_feed->{'message'};
+							echo $json_feed->{'error'};
+							if($json_feed->{'error'} == null){
+								$result = mysql_query("SELECT payments, pricewins FROM ".MYSQLINFORMATIONTABLE." ORDER BY datetime DESC LIMIT 1");
+								while($row = mysql_fetch_array($result)){
+									//Update the faucet information
+									mysql_query("INSERT INTO ".MYSQLINFORMATIONTABLE." (id,datetime,payments,pricewins)VALUES (NULL,'".date("Y-m-d H:i:s")."',  '". ($row['payments'] + 1)."',  '". ($row['pricewins'] + $totalpricewins )."')");
+								}											
+								mysql_query("TRUNCATE TABLE ".MYSQLBTCTABLE.";");
+								// This is a know bug. The payout script doesn't work with the first row. That is why there is a OFFSET 1. This line is needed howewer. You can change it if you want. // 
+								mysql_query("INSERT INTO ".MYSQLBTCTABLE." (id,address,ip) VALUES ( '', 'randomaddress', '127.0.0.1' )")or die(mysql_error());
+								// ------------------------- //
+								echo "<br />Cleared table";
+							}
 						}
 					}
 				}else{
