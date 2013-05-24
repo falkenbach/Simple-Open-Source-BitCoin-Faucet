@@ -29,7 +29,7 @@ include("includes/config.php");
 				} 
 			if($currentpayrequests >= MINIMUMPAYOUTREQUEST){
 				$arr = null;
-				$result = mysql_query("SELECT address, pricewin FROM ".MYSQLBTCTABLE." ORDER BY id LIMIT ". ($currentpayrequests - 1) ." OFFSET 1") or die(mysql_error());;
+				$result = mysql_query("SELECT address, pricewin FROM ".MYSQLBTCTABLE." ORDER BY id LIMIT 100 OFFSET 1") or die(mysql_error());;
 				if(mysql_fetch_array($result) != null){
 					$totalpricewins = 0;
 					while($row = mysql_fetch_array($result)) 
@@ -64,9 +64,9 @@ include("includes/config.php");
 									//Update the faucet information
 									mysql_query("INSERT INTO ".MYSQLINFORMATIONTABLE." (id,datetime,payments,pricewins)VALUES (NULL,'".date("Y-m-d H:i:s")."',  '". ($row['payments'] + 1)."',  '". ($row['pricewins'] + $totalpricewins )."')");
 								}											
-								mysql_query("TRUNCATE TABLE ".MYSQLBTCTABLE.";");
+								mysql_query("DELETE FROM ".MYSQLBTCTABLE." WHERE id IN (select id from (select id FROM ".MYSQLBTCTABLE." ORDER BY id DESC LIMIT 100 OFFSET 1) x)");
 								// This is a know bug. The payout script doesn't work with the first row. That is why there is a OFFSET 1. This line is needed howewer. You can change it if you want. // 
-								mysql_query("INSERT INTO ".MYSQLBTCTABLE." (id,address,ip) VALUES ( '', 'randomaddress', '127.0.0.1' )")or die(mysql_error());
+								mysql_query("INSERT INTO ".MYSQLBTCTABLE." (id,address,ip) VALUES ('1', 'randomaddress', '127.0.0.1' )");
 								// ------------------------- //
 								echo "<br />Cleared table";
 							}
