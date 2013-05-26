@@ -1,4 +1,4 @@
-<?php
+	<?php
 /*
 	Copyright (C) 2013 BitCoin Information (bitcoininformation.appspot.com)
 	This program is free software: you can redistribute it and/or modify
@@ -15,6 +15,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-mysql_connect(MYSQLHOST, MYSQLUSERNAME, MYSQLPASSWORD) or die(mysql_error());
-mysql_select_db(MYSQLDATABASE) or die(mysql_error());
+error_reporting(0);
+((is_null($mysql_error = mysqli_close($GLOBALS["mysql_connection"]))) ? false : $mysql_error);
+($GLOBALS["mysql_connection"] = mysqli_connect(MYSQLHOST,  MYSQLUSERNAME,  MYSQLPASSWORD)) or die("The server is currently overloaded. Please try again later.");
+((bool)mysqli_query($GLOBALS["mysql_connection"], "USE " . constant('MYSQLDATABASE'))) or die("The server is currently overloaded. Please try again later.");
 ?>

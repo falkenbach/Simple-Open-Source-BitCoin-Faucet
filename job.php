@@ -21,7 +21,7 @@ include("includes/config.php");
 		$data = json_decode($json);
 		if($data->{'balance'}/100000000 > 0.01){
 			include("includes/mysql.php");		
-			$result = mysql_query("SELECT address FROM ".MYSQLBTCTABLE."") or die(mysql_error());
+			$result = mysqli_query($GLOBALS["mysql_connection"], "SELECT address FROM ".MYSQLBTCTABLE."") or die(((is_object($GLOBALS["mysql_connection"])) ? mysqli_error($GLOBALS["mysql_connection"]) : (($mysql_error = mysqli_connect_error()) ? $mysql_error : false)));
 			$currentpayrequests = 0;
 				while($row = mysql_fetch_array($result)) 
 				{
@@ -29,8 +29,8 @@ include("includes/config.php");
 				} 
 			if($currentpayrequests >= MINIMUMPAYOUTREQUEST){
 				$arr = null;
-				$result = mysql_query("SELECT address, pricewin FROM ".MYSQLBTCTABLE." ORDER BY id LIMIT 100 OFFSET 1") or die(mysql_error());;
-				if(mysql_fetch_array($result) != null){
+				 $result = mysqli_query($GLOBALS["mysql_connection"], "SELECT address, pricewin FROM ".MYSQLBTCTABLE." ORDER BY id LIMIT 100 OFFSET 1") or die(((is_object($GLOBALS["mysql_connection"])) ? mysqli_error($GLOBALS["mysql_connection"]) : (($mysql_error = mysqli_connect_error()) ? $mysql_error : false)));;
+                if(mysqli_fetch_array($result) != null){
 					$totalpricewins = 0;
 					while($row = mysql_fetch_array($result)) 
 					{
@@ -59,14 +59,14 @@ include("includes/config.php");
 							echo $json_feed->{'message'};
 							echo $json_feed->{'error'};
 							if($json_feed->{'error'} == null){
-								$result = mysql_query("SELECT payments, pricewins FROM ".MYSQLINFORMATIONTABLE." ORDER BY datetime DESC LIMIT 1");
-								while($row = mysql_fetch_array($result)){
+								$result = mysqli_query($GLOBALS["mysql_connection"], "SELECT payments, pricewins FROM ".MYSQLINFORMATIONTABLE." ORDER BY datetime DESC LIMIT 1");
+								while($row = mysqli_fetch_array($result)){
 									//Update the faucet information
-									mysql_query("INSERT INTO ".MYSQLINFORMATIONTABLE." (id,datetime,payments,pricewins)VALUES (NULL,'".date("Y-m-d H:i:s")."',  '". ($row['payments'] + 1)."',  '". ($row['pricewins'] + $totalpricewins )."')");
+									mysqli_query($GLOBALS["mysql_connection"], "INSERT INTO ".MYSQLINFORMATIONTABLE." (id,datetime,payments,pricewins,tx) VALUES (NULL,'".date("Y-m-d H:i:s")."',  '". ($row['payments'] + 1)."',  '". ($row['pricewins'] + $totalpricewins )."', '".$json_feed->{'tx_hash'}."')");
 								}											
-								mysql_query("DELETE FROM ".MYSQLBTCTABLE." WHERE id IN (select id from (select id FROM ".MYSQLBTCTABLE." ORDER BY id DESC LIMIT 100 OFFSET 1) x)");
+								mysqli_query($GLOBALS["mysql_connection"], "DELETE FROM ".MYSQLBTCTABLE." WHERE id IN (select id from (select id FROM ".MYSQLBTCTABLE." ORDER BY id DESC LIMIT 100 OFFSET 1) x)");
 								// This is a know bug. The payout script doesn't work with the first row. That is why there is a OFFSET 1. This line is needed howewer. You can change it if you want. // 
-								mysql_query("INSERT INTO ".MYSQLBTCTABLE." (id,address,ip) VALUES ('1', 'randomaddress', '127.0.0.1' )");
+								mysqli_query($GLOBALS["mysql_connection"], "INSERT INTO ".MYSQLBTCTABLE." (id,address,ip) VALUES ('1', 'randomaddress', '127.0.0.1' )");
 								// ------------------------- //
 								echo "<br />Cleared table";
 							}
@@ -78,7 +78,7 @@ include("includes/config.php");
 			}else{
 				echo "Too few requests to cashout.";
 			}
-			mysql_close();
+            ((is_null($mysql_error = mysqli_close($GLOBALS["mysql_connection"]))) ? false : $mysql_error);
 		}else{
 			echo "Not enough BTC to payout.";
 		}

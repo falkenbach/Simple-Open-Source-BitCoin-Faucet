@@ -58,33 +58,30 @@
 				 </form>
 				<?php
 			}	
-			$result = mysql_query("SELECT address FROM ".MYSQLBTCTABLE."") or die(mysql_error());
+			$result = mysqli_query($GLOBALS["mysql_connection"], "SELECT address, pricewin FROM ".MYSQLBTCTABLE."") or die(((is_object($GLOBALS["mysql_connection"])) ? mysqli_error($GLOBALS["mysql_connection"]) : (($mysql_error = mysqli_connect_error()) ? $mysql_error : false)));
 			$currentpayrequests = 0;
-				while($row = mysql_fetch_array($result)) 
+			$pricewins = 0;
+				while($row = mysqli_fetch_array($result)) 
 				{
 					$currentpayrequests++;
-				}
-			if($currentpayrequests !== 0){
-				$currentpayrequests--; //This is to correct the bug I have later on. Do not remove if you don't know what you are doing!
-			}
-			$result = mysql_query("SELECT pricewin FROM ".MYSQLBTCTABLE."") or die(mysql_error());
-			$pricewins = 0;
-				while($row = mysql_fetch_array($result)) 
-				{
 					if($row['pricewin'] == "1"){
 					$pricewins++;}
 				}
-			$result = mysql_query("SELECT payments, pricewins FROM informations ORDER BY datetime DESC LIMIT 1");
-				while($row = mysql_fetch_array($result)) 
+			if($currentpayrequests !== 0){
+				$currentpayrequests--;
+			}
+			$result = mysqli_query($GLOBALS["mysql_connection"], "SELECT payments, pricewins FROM ".MYSQLINFORMATIONTABLE." ORDER BY datetime DESC LIMIT 1") or die(((is_object($GLOBALS["mysql_connection"])) ? mysqli_error($GLOBALS["mysql_connection"]) : (($mysql_error = mysqli_connect_error()) ? $mysql_error : false)));
+				while($row = mysqli_fetch_array($result)) 
 				{
 					$payments=$row['payments'];
 					$totalpricewins=$row['pricewins'];
 				}
-				try{	
-					$data = file_get_contents("http://blockchain.info/q/addressbalance/".FAUCETADDRESS."");
-				}catch(Exception $e){
-					echo "Error getting the balance.";
-				}
+			try{    
+				$data = get_data("http://blockchain.info/q/addressbalance/".FAUCETADDRESS."");
+				$totalbtcsend = get_data("http://blockchain.info/q/getsentbyaddress/".FAUCETADDRESS."")/100000000;
+			}catch(Exception $e){
+				echo "Error getting the balance.";
+			}
 				echo "<fieldset>";
 					echo "<legend>Faucet Details</legend>";
 						echo "<table class='test'>";
@@ -127,8 +124,8 @@
 					else {
 						// CAPTCHA was entered correctly
 						try {
-							$result = mysql_query("SELECT * FROM ".MYSQLBTCTABLE." WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' AND date = '".date("Y-m-d")."' AND time = '".date("H")."'") or die(mysql_error());
-							if(mysql_fetch_array($result) !== false){
+							$result = mysqli_query($GLOBALS["mysql_connection"], "SELECT * FROM ".MYSQLBTCTABLE." WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' AND date = '".date("Y-m-d")."' AND time = '".date("H")."'") or die(((is_object($GLOBALS["mysql_connection"])) ? mysqli_error($GLOBALS["mysql_connection"]) : (($mysql_error = mysqli_connect_error()) ? $mysql_error : false)));
+                            if(mysqli_fetch_array($result) !== false){
 								//Already signed up for this hour. IP is checked, but you could change that if you want. Hell you can change everything.
 								echo ("<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>You already signed up. Try again after 1 hour!</b></fieldset>");
 							}else{
@@ -136,23 +133,19 @@
 								$random = rand(MINRANDOMNUMBER, MAXRANDOMNUMBER);
 								if($random >= BELOWNUMBER){
 									//NO pricewin
-									$run = mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."')"); 
+									$run = mysqli_query($GLOBALS["mysql_connection"], "INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."')") or die(((is_object($GLOBALS["mysql_connection"])) ? mysqli_error($GLOBALS["mysql_connection"]) : (($mysql_error = mysqli_connect_error()) ? $mysql_error : false)));
 									if ($run !== true) {
 										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
-										echo '<fieldset><legend>Gamble on Peter vs. Chicken!</legend><a href="http://peterversuschicken.appspot.com/" target="_top"><img border="0" src="peterad.jpg" alt="Come and gamble a bit!" width="300" height="250"></a></fieldset>';
 									}else{
 										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!</b>";
-										echo '<fieldset><legend>Gamble on Peter vs. Chicken!</legend><a href="http://peterversuschicken.appspot.com/" target="_top"><img border="0" src="peterad.jpg" alt="Come and gamble a bit!" width="300" height="250"></a></fieldset>';
 									}
 								}else{
 									//PRICEWIN
-									$run = mysql_query("INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time, pricewin) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."', '1')"); 
+									$run = mysqli_query($GLOBALS["mysql_connection"], "INSERT INTO ".MYSQLBTCTABLE."(id, address, ip, date, time, pricewin) VALUES('','" . $_POST['address'] . "','" . $_SERVER['REMOTE_ADDR'] . "', '".date("Y-m-d")."', '".date("H")."', '1')") or die(((is_object($GLOBALS["mysql_connection"])) ? mysqli_error($GLOBALS["mysql_connection"]) : (($mysql_error = mysqli_connect_error()) ? $mysql_error : false)));
 									if ($run !== true) {
 										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:red;'><b>There was a problem. Please try again.</b></fieldset>";
-										echo '<fieldset><legend>Gamble on Peter vs. Chicken!</legend><a href="http://peterversuschicken.appspot.com/" target="_top"><img border="0" src="peterad.jpg" alt="Come and gamble a bit!" width="300" height="250"></a></fieldset>';
 									}else{
 										echo "<fieldset><legend>Request Payment</legend><p id='form' style='color:green;'><b>Your address has been added!<br /><br />You ALSO won the Prize Win! This payment will be multiplied by ".PRICEWINTIME."!</b>";
-										echo '<fieldset><legend>Gamble on Peter vs. Chicken!</legend><a href="http://peterversuschicken.appspot.com/" target="_top"><img border="0" src="peterad.jpg" alt="Come and gamble a bit!" width="300" height="250"></a></fieldset>';
 									}
 								}
 							}
@@ -168,7 +161,7 @@
 					form();
 				}
 			}
-			mysql_close();
+			((is_null($mysql_error = mysqli_close($GLOBALS["mysql_connection"]))) ? false : $mysql_error);
 			?>
         </div>
       </div>
