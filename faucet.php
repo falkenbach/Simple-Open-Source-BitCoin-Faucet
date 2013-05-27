@@ -74,6 +74,8 @@
 					if($row['pricewin'] == "1"){
 					$pricewins++;}
 				}
+			$payments = 0;
+			$totalpricewins = 0;
 			$result = mysql_query("SELECT payments, pricewins FROM informations ORDER BY datetime DESC LIMIT 1");
 				while($row = mysql_fetch_array($result)) 
 				{
